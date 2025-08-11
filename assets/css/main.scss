@@ -60,4 +60,36 @@ a.btn.btn--primary.full-text {
   padding: .45rem .8rem;
   text-decoration: none;
 }
+/* Publication page actions */
+.pub-actions {
+  margin-top: .75rem;
+  display: flex;
+  gap: .5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+a.btn.btn--primary.full-text {
+  border-radius: 6px;
+  padding: .45rem .8rem;
+  text-decoration: none;
+}
+
+.badge-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .875rem;
+  line-height: 1;
+  padding: .35rem .5rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #444;
+}
+
+.badge-pdf:hover {
+  border-color: #bbb;
+  color: #111;
+}
 
