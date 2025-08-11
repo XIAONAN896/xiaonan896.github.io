@@ -39,4 +39,25 @@
     "vendor/font-awesome/fontawesome",
     "vendor/font-awesome/solid",
     "vendor/font-awesome/brands"
+   
 ;
+
+/* === Custom overrides === */
+.pub-authors {
+  font-size: .95rem;
+  color: #555;
+  margin: .15rem 0 .25rem;
+}
+
+.pub-venue {
+  font-size: .9rem;
+  color: #777;
+}
+
+/* Optional: make the Full Text button a bit nicer */
+a.btn.btn--primary.full-text {
+  border-radius: 6px;
+  padding: .45rem .8rem;
+  text-decoration: none;
+}
+
