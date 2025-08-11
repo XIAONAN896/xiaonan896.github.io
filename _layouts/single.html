@@ -27,26 +27,73 @@ layout: default
       {% unless page.header.overlay_color or page.header.overlay_image %}
         <header>
           {% if page.title %}<h1 class="page__title" itemprop="headline">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>{% endif %}
-          {% if page.read_time %}
-            <p class="page__meta"><i class="fa fa-clock" aria-hidden="true"></i> {% include read-time.html %}</p>
+
+          {%- comment -%} AUTHORS LINE (bold your name) {%- endcomment -%}
+          {% if page.collection == 'publications' and page.authors %}
+            <div class="pub-authors">
+              {% assign myname = "Xiao, N." %}
+              {% for author in page.authors %}
+                {% assign cleaned = author | replace: "*", "" %}
+                {% if cleaned contains myname %}
+                  <strong>{{ author }}</strong>{% unless forloop.last %}, {% endunless %}
+                {% else %}
+                  {{ author }}{% unless forloop.last %}, {% endunless %}
+                {% endif %}
+              {% endfor %}
+            </div>
           {% endif %}
-        {% if page.modified %}
-          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ page.modified | date: "%Y-%m-%d" }}">{{ page.modified | date: "%B %d, %Y" }}</time></p>
-        {% endif %}
-        
-        {% if page.collection == 'teaching' %}
-          <p> {{ page.type }}, <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
-        {% elsif page.venue and page.date %}
-          <p>Published in <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
-        {% elsif page.date %}
-          <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time></p>
-        {% endif %}    
+
+          {%- comment -%} VENUE + YEAR or STATUS {%- endcomment -%}
+          {% if page.collection == 'publications' %}
+            <div class="pub-venue">
+              {% if page.venue %}Published in <i>{{ page.venue }}</i>{% endif %}
+              {% if page.date %}
+                {% if page.venue %}, {% endif %}{{ page.date | date: "%Y" }}
+              {% elsif page.status %}
+                {% if page.venue %}, {% endif %}{{ page.status | capitalize }}
+              {% else %}
+                {% if page.venue %}, {% endif %}In press / forthcoming
+              {% endif %}
+            </div>
+          {% elsif page.collection == 'teaching' %}
+            <p>{{ page.type }}, <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }}</p>
+          {% elsif page.date %}
+            <p class="page__date"><strong><i class="fa fa-fw fa-calendar" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Published:" }}</strong> <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | default: "1900-01-01" | date: "%B %d, %Y" }}</time></p>
+          {% endif %}
         </header>
       {% endunless %}
 
       <section class="page__content" itemprop="text">
         {{ content }}
 
+        {%- comment -%} ACTION BUTTONS: Full Text + optional PDF badge + (optional) DOI line {%- endcomment -%}
+        {% if page.collection == "publications" %}
+          <div class="pub-actions">
+            {% if page.link %}
+              <a class="btn btn--primary full-text" href="{{ page.link }}" target="_blank" rel="noopener">
+                Full Text
+              </a>
+            {% endif %}
+
+            {% if page.pdf %}
+              {%- assign pdf_url = page.pdf -%}
+              {%- unless page.pdf contains "://" -%}
+                {%- assign pdf_url = pdf_url | prepend: "/files/" -%}
+              {%- endunless -%}
+              <a class="badge-pdf" href="{{ pdf_url }}" target="_blank" rel="noopener" title="Open PDF">
+                <i class="fa fa-file-pdf-o" aria-hidden="true"></i> PDF
+              </a>
+            {% endif %}
+          </div>
+
+          {% if page.doi %}
+            <p class="pub-doi" style="margin-top:.35rem;">
+              DOI: <a href="{{ page.doi }}" target="_blank" rel="noopener">{{ page.doi }}</a>
+            </p>
+          {% endif %}
+        {% endif %}
+
+        {%- comment -%} Existing recommended-citation block (leave as-is) {%- endcomment -%}
         {% if page.citation and page.paperurl and page.slidesurl and page.bibtexurl %}
           <p style="font-size: smaller">Recommended citation: {{ page.citation }}<br /><a href="{{ page.paperurl }}">Download Paper</a> | <a href="{{ page.slidesurl }}">Download Slides</a> | <a href="{{ page.bibtexurl }}">Download Bibtex</a></p>
         {% elsif page.citation and page.paperurl and page.slidesurl %}
@@ -72,8 +119,6 @@ layout: default
         {% elsif page.bibtexurl %}
           <p style="font-size: smaller"><a href="{{ page.bibtexurl }}">Download Bibtex</a></p>
         {% endif %}
-
-        {% if page.link %}<div><a href="{{ page.link }}" class="btn">{{ site.data.ui-text[site.locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
       </section>
 
       <footer class="page__meta">
@@ -93,7 +138,6 @@ layout: default
     {% endif %}
   </article>
 
-  {% comment %}<!-- only show related on a post page when not disabled -->{% endcomment %}
   {% if page.id and page.related and site.related_posts.size > 0 %}
     <div class="page__related">
       {% if site.data.ui-text[site.locale].related_label %}
