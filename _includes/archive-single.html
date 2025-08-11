@@ -26,7 +26,7 @@
       <a href="{{ base_path }}{{ post.url }}" rel="permalink">{{ title }}</a>
     </h2>
 
-    {% comment %} PUBLICATIONS: authors + venue/year {% endcomment %}
+    {%- comment -%} PUBLICATIONS: authors + venue/year (or in press) {%- endcomment -%}
     {% if post.collection == 'publications' %}
       {% if post.authors %}
         <div class="pub-authors">
@@ -41,13 +41,20 @@
           {% endfor %}
         </div>
       {% endif %}
+
       <div class="pub-venue">
         {% if post.venue %}Published in <i>{{ post.venue }}</i>{% endif %}
-        {% if post.date %}{% if post.venue %}, {% endif %}{{ post.date | date: "%Y" }}{% endif %}
+        {% if post.date %}
+          {% if post.venue %}, {% endif %}{{ post.date | date: "%Y" }}
+        {% elsif post.status %}
+          {% if post.venue %}, {% endif %}{{ post.status | capitalize }}
+        {% else %}
+          {% if post.venue %}, {% endif %}In press / forthcoming
+        {% endif %}
       </div>
     {% endif %}
 
-    {% comment %} OTHER COLLECTIONS' META {% endcomment %}
+    {%- comment -%} OTHER COLLECTIONS' META {%- endcomment -%}
     {% if post.collection == 'teaching' %}
       <p>{{ post.type }}, <i>{{ post.venue }}</i>, {{ post.date | default: "1900-01-01" | date: "%Y" }}</p>
     {% elsif post.collection != 'publications' and post.date %}
