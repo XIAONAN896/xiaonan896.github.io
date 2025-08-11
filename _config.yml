@@ -9,7 +9,7 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default" # Currently available options are "default", "air"
-title                    : "Nan Xiao, Ph.D."
+title                    : "Dr. XIAO, Nan 肖楠."
 title_separator          : "-"
 name                     : &name "Nan Xiao"
 description              : &description "Applied Developmental psychologist | Relational well-being | Technology-assisted interventions"
