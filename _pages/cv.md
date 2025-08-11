@@ -25,3 +25,8 @@ redirect_from:
     Download CV (PDF)
   </a>
 </p>
+
+<p style="font-size:0.9em; color:#555;">
+  <em>Last updated: {{ site.time | date: "%B %d, %Y" }}</em>
+</p>
+
