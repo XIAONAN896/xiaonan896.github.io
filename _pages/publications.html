@@ -6,31 +6,49 @@ author_profile: true
 ---
 
 {% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
+  <div class="wordwrap">
+    You can also find my articles on 
+    <a href="{{ site.author.googlescholar }}">my Google Scholar profile</a>.
+  </div>
 {% endif %}
 
 {% include base_path %}
 
-<!-- New style rendering if publication categories are defined -->
 {% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
+  {% for category in site.publication_category %}
+    {% assign key   = category[0] %}
+    {% assign label = category[1].title %}
+
+    {% assign items_in_cat = site.publications | where: "category", key %}
+    {% assign dated   = items_in_cat | where_exp: "p", "p.date" | sort: "date" | reverse %}
+    {% assign groups  = dated | group_by_exp: "p", "p.date | date: '%Y'" %}
+    {% assign undated = items_in_cat | where_exp: "p", "p.date == nil" %}
+
+    {% if items_in_cat and items_in_cat.size > 0 %}
+      <h2>{{ label }}</h2><hr />
+
+      {% for g in groups %}
+        <h3>{{ g.name }}</h3>
+        {% for post in g.items %}
+          {% include archive-single.html %}
+        {% endfor %}
+      {% endfor %}
+
+      {% if undated and undated.size > 0 %}
+        <h3>In press / forthcoming</h3>
+        {% for post in undated %}
+          {% include archive-single.html %}
+        {% endfor %}
       {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
+    {% endif %}
+  {% endfor %}
+{% else %}
+  {% assign dated_all = site.publications | where_exp: "p", "p.date" | sort: "date" | reverse %}
+  {% assign groups_all = dated_all | group_by_exp: "p", "p.date | date: '%Y'" %}
+  {% for g in groups_all %}
+    <h3>{{ g.name }}</h3>
+    {% for post in g.items %}
       {% include archive-single.html %}
     {% endfor %}
   {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
-  {% endfor %}
 {% endif %}
-
-
-
