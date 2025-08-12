@@ -1,5 +1,5 @@
 ---
-title: "Classroom Social Network Antecedents of Relational Aggression and Victimization for Kindergarten Children"
+title: "Classroom social network antecedents of relational aggression and victimization for kindergarten children"
 authors:
   - Xiao, N.*
   - Lin, T. J.
