@@ -1,5 +1,5 @@
 ---
-title: "Entry Into Boarding Preschool Is Associated With Increased Stress and School Refusal"
+title: "Entry into boarding preschool is associated with increased stress and school refusal"
 authors:
   - Xiao, N.*
   - Zhang, X.
