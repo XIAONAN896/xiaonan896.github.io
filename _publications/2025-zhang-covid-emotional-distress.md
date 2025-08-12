@@ -13,4 +13,4 @@ canonical_url: ""
 
 <!-- Paste the exact abstract from the publisher page below (verbatim). -->
 
-**Summary (non-verbatim):** Cross-city comparison indicates lockdown conditions were associated with heightened emotional distress among young children, with contextual differences across sites.
+**Summary:** Cross-city comparison indicates lockdown conditions were associated with heightened emotional distress among young children, with contextual differences across sites.
